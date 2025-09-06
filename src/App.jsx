@@ -1,29 +1,39 @@
-import React from 'react'
-import { Routes, Route } from 'react-router-dom'
-import Home from './pages/Home'
-import ToolsList from './pages/ToolsList'
-import ToolDetail from './pages/ToolDetail'
-import AddTool from './pages/AddTool'
-import EditToolPage from './pages/EditToolPage'
-import Login from './pages/Login'
-import Header from './components/Header'
-import Footer from './components/Footer'
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Header from './components/Header';
+import Footer from './components/Footer';
 
-export default function App() {
+// Pages (case-sensitive imports)
+import Home from './pages/Home';
+import ToolsList from './pages/ToolsList';
+import ToolDetail from './pages/ToolDetail';
+import AddTool from './pages/AddTool';
+import EditTool from './pages/EditTool';
+import Login from './pages/Login';
+
+function App() {
+  const [isAdmin, setIsAdmin] = useState(localStorage.getItem('isAdmin') === 'true');
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#041026] via-[#051233] to-[#060217] text-slate-100">
-      <Header />
-      <main className="pt-20 pb-16">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/tools" element={<ToolsList />} />
-          <Route path="/tools/:id" element={<ToolDetail />} />
-          <Route path="/add" element={<AddTool />} />
-          <Route path="/edit/:id" element={<EditToolPage />} />
-          <Route path="/login" element={<Login />} />
-        </Routes>
-      </main>
+    <Router>
+      <Header isAdmin={isAdmin} />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/tools" element={<ToolsList />} />
+        <Route path="/tools/:id" element={<ToolDetail />} />
+        <Route
+          path="/add"
+          element={isAdmin ? <AddTool /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/edit/:id"
+          element={isAdmin ? <EditTool /> : <Navigate to="/login" />}
+        />
+        <Route path="/login" element={<Login setIsAdmin={setIsAdmin} />} />
+      </Routes>
       <Footer />
-    </div>
-  )
+    </Router>
+  );
 }
+
+export default App;
