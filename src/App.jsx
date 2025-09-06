@@ -5,7 +5,7 @@ import Footer from './components/Footer';
 
 // Pages (case-sensitive imports)
 import Home from './pages/Home';
-import ToolsList from './pages/ToolsList';
+import ToolsList from './pages/ToolsList'; // exact match
 import ToolDetail from './pages/ToolDetail';
 import AddTool from './pages/AddTool';
 import EditTool from './pages/EditTool';
